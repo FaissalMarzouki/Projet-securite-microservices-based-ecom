@@ -14,6 +14,16 @@
     <packaging>pom</packaging>
     <name>Projet-securite-systeme-distribue</name>
     <description>Projet-securite-systeme-distribue</description>
+    <modules>
+        <module>discovery-service</module>
+        <module>config-service</module>
+        <module>product-service</module>
+        <module>order-service</module>
+        <module>customer-service</module>
+        <module>gatewey-service</module>
+        <module>inventory-service</module>
+        <module>billing-service</module>
+    </modules>
     <url/>
     <licenses>
         <license/>
