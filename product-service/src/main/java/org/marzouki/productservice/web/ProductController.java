@@ -5,7 +5,6 @@ import org.marzouki.productservice.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -42,10 +41,9 @@ public class ProductController {
     }
 
     /**
-     * POST /api/products - Create new product (only ADMIN can create)
+     * POST /api/products - Create new product
      */
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Product> createProduct(@RequestBody Product product) {
         try {
             // Generate UUID if not provided
@@ -60,10 +58,9 @@ public class ProductController {
     }
 
     /**
-     * PUT /api/products/{id} - Update product (only ADMIN can update)
+     * PUT /api/products/{id} - Update product
      */
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Product> updateProduct(
             @PathVariable String id,
             @RequestBody Product productDetails) {
@@ -92,10 +89,9 @@ public class ProductController {
     }
 
     /**
-     * DELETE /api/products/{id} - Delete product (only ADMIN can delete)
+     * DELETE /api/products/{id} - Delete product
      */
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteProduct(@PathVariable String id) {
         Optional<Product> product = productRepository.findById(id);
         if (product.isPresent()) {

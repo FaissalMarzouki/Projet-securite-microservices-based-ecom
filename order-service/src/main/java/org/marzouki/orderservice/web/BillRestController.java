@@ -9,7 +9,6 @@ import org.marzouki.orderservice.repository.ProductItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,10 +32,9 @@ public class BillRestController {
     private ProductRestClient productRestClient;
 
     /**
-     * GET /api/orders - Get all orders (ADMIN only)
+     * GET /api/orders - Get all orders
      */
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<Bill>> getAllOrders() {
         List<Bill> orders = billRepository.findAll();
         enrichOrdersWithDetails(orders);
@@ -68,10 +66,9 @@ public class BillRestController {
     }
 
     /**
-     * POST /api/orders - Create new order (CLIENT creates own order, ADMIN creates for anyone)
+     * POST /api/orders - Create new order
      */
     @PostMapping
-    @PreAuthorize("hasRole('CLIENT') or hasRole('ADMIN')")
     public ResponseEntity<Bill> createOrder(@RequestBody Bill order) {
         try {
             // Set initial status as PENDING
@@ -97,10 +94,9 @@ public class BillRestController {
     }
 
     /**
-     * PUT /api/orders/{id} - Update order (ADMIN only, or CLIENT updating own order status)
+     * PUT /api/orders/{id} - Update order
      */
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Bill> updateOrder(
             @PathVariable Long id,
             @RequestBody Bill orderDetails) {
@@ -126,10 +122,9 @@ public class BillRestController {
     }
 
     /**
-     * PATCH /api/orders/{id}/status - Update order status (CLIENT can update own order, ADMIN any)
+     * PATCH /api/orders/{id}/status - Update order status
      */
     @PatchMapping("/{id}/status")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Bill> updateOrderStatus(
             @PathVariable Long id,
             @RequestParam Bill.OrderStatus status) {
@@ -145,10 +140,9 @@ public class BillRestController {
     }
 
     /**
-     * DELETE /api/orders/{id} - Delete order (ADMIN only)
+     * DELETE /api/orders/{id} - Delete order
      */
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteOrder(@PathVariable Long id) {
         Optional<Bill> bill = billRepository.findById(id);
         if (bill.isPresent()) {
