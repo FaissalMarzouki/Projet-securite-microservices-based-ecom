@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: gateway-service
+  cloud:
+    gateway:
+      routes:
+        - id: customer-route
+          uri: lb://CUSTOMER-SERVICE
+          predicates:
+            - Path=/customer-service/**
+          filters:
+            - RewritePath=/customer-service/(?<segment>.*), /$\{segment}
+        - id: inventory-route
+          uri: lb://INVENTORY-SERVICE
+          predicates:
+            - Path=/inventory-service/**
+          filters:
+            - RewritePath=/inventory-service/(?<segment>.*), /$\{segment}
+        - id: billing-route
+          uri: lb://BILLING-SERVICE
+          predicates:
+            - Path=/billing-service/**
+          filters:
+            - RewritePath=/billing-service/(?<segment>.*), /$\{segment}
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+
